@@ -37,11 +37,11 @@ A puzzle platformer where you write GDScript code to solve puzzles and progress 
 3. Configure VS Code (Optional but recommended):
    - Open the project folder in VS Code
    - Install the Godot Tools extension
-   - See `SETUP_GUIDE.md` for detailed instructions
+   - See `SETUPINSTRUCTIONS.md` for detailed instructions
 
 4. Run the game:
    - Press `F5` or click the play button in Godot
-   - The game will open with Level 1
+   - The game will open in the connected world, starting at Zone 1 "The Awakening"
 
 ## How to Play
 
@@ -107,9 +107,9 @@ Safely executes player-written GDScript with:
 
 ### WizardAPI
 Defines allowed functions per progression tier:
-- **Apprentice**: `spawn_platform()`, `change_gravity()`, `teleport_player()`
-- **Journeyman**: Loops, conditionals, `create_timer()`, `tween_property()`
-- **Master**: Full sandbox access (with limits)
+- **Apprentice**: `spawn_platform()`, `change_gravity()`, `teleport_player()`, conditionals
+- **Journeyman**: Loops, functions, `match`, `tween_property()`, `get_node()`
+- **Master**: `instantiate_scene()`, `connect_signal()`, `physics_raycast()` (full sandbox with limits)
 
 ### ProgressionManager
 Tracks your progress:
@@ -138,9 +138,10 @@ The project is configured for desktop exports (Windows/Linux/macOS). See Godot d
 
 ## Roadmap
 
-- [ ] **Phase 1** (Current): Core sandbox, Apprentice tier, 2 MVP levels
-- [ ] **Phase 2**: Visual block editor, Journeyman tier, 3-5 levels
-- [ ] **Phase 3**: Master tier, advanced puzzles, level editor
+- [x] **Phase 1**: Core sandbox, Apprentice tier, MVP level
+- [x] **Phase 1.5**: Journeyman & Master tiers, crash guards
+- [x] **Phase 2**: Single connected world stage with 4 puzzle zones
+- [ ] **Phase 3**: Respawn checkpoints, visual block palette, dedicated HUD scene
 - [ ] **Phase 4**: Polish, sound design, tutorial levels
 
 ## Contributing
