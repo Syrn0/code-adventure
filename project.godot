@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="CodeAdventure"
-run/main_scene="res://Scenes/Levels/level_01.tscn"
+run/main_scene="res://Scenes/World/world_stage.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://Assets/icon.svg"
 

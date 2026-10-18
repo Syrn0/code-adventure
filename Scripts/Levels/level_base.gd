@@ -162,7 +162,7 @@ func get_gravity() -> float:
 
 func set_gravity(value: float) -> void:
 	gravity = value
-	if player:
+	if is_instance_valid(player):
 		var g = player.get("current_gravity")
 		if g != null:
 			player.set("current_gravity", value)
@@ -170,9 +170,12 @@ func set_gravity(value: float) -> void:
 
 func _process(_delta: float) -> void:
 	# Check win condition (player reached goal)
-	if not level_completed and goal_area and player:
-		if player.global_position.distance_to(goal_area.global_position) < 32.0:
-			_win_level()
+	if level_completed:
+		return
+	if not is_instance_valid(player) or not is_instance_valid(goal_area):
+		return
+	if player.global_position.distance_to(goal_area.global_position) < 32.0:
+		_win_level()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -191,6 +194,18 @@ func open_code_editor() -> void:
 
 ## Called when the player casts their spell from the editor
 func _on_run_requested(code: String) -> void:
+	# Guard against missing/freed core systems before doing anything else
+	if not is_instance_valid(sandbox):
+		push_error("LevelBase: sandbox is unavailable")
+		if code_editor:
+			code_editor.show_result(false, "The spellbook is unavailable right now - please restart the level.", [])
+		return
+	if not is_instance_valid(progression):
+		push_error("LevelBase: progression manager is unavailable")
+		if code_editor:
+			code_editor.show_result(false, "The spellbook is unavailable right now - please restart the level.", [])
+		return
+
 	# Validate min length
 	if code.length() < min_code_length:
 		if code_editor:
@@ -250,7 +265,10 @@ func _win_level() -> void:
 		return
 
 	level_completed = true
-	progression.complete_level(level_id)
+	if is_instance_valid(progression):
+		progression.complete_level(level_id)
+	else:
+		push_warning("LevelBase: progression manager unavailable - completion not recorded")
 
 	# Camera shake for feedback
 	if camera:
@@ -264,7 +282,7 @@ func _win_level() -> void:
 
 
 func _spawn_win_effects() -> void:
-	if player:
+	if is_instance_valid(player):
 		# Spawn celebration particles at player position
 		var particles := CPUParticles2D.new()
 		particles.position = player.global_position

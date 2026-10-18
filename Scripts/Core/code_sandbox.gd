@@ -84,6 +84,24 @@ func execute(code: String, context: Dictionary = {}) -> SandboxResult:
 	if current_api == null:
 		return SandboxResult.new(false, null, "No API whitelist configured", 0)
 
+	# Validate the world/context BEFORE compiling so the API implementation
+	# never receives a freed instance (freed-but-not-null would pass a plain
+	# `!= null` check and crash the engine mid-spell).
+	if not is_instance_valid(world_context):
+		var world_error := "The game world is not available - spells cannot run right now."
+		execution_error.emit(world_error)
+		return SandboxResult.new(false, null, world_error, 0)
+
+	for key in ["level", "player", "goal"]:
+		# NOTE: a freed object stored in a Variant reads as == null in Godot 4,
+		# but still hard-errors when passed to a typed parameter. Distinguish a
+		# legitimately-null entry (e.g. a level without a goal, typeof == NIL)
+		# from a freed one (typeof stays TYPE_OBJECT but is no longer valid).
+		if context.has(key) and typeof(context[key]) == TYPE_OBJECT and not is_instance_valid(context[key]):
+			var ctx_error := "The game object '%s' no longer exists - spells cannot run right now." % key
+			execution_error.emit(ctx_error)
+			return SandboxResult.new(false, null, ctx_error, 0)
+
 	# Start timing
 	var start_time := Time.get_ticks_msec()
 	execution_started.emit()
@@ -549,14 +567,35 @@ func _log(msg) -> void:
 	for line in player_lines:
 		var stripped := line.strip_edges()
 		if stripped != "" and not stripped.begins_with("#"):
-			# Preserve original indentation, just indent one level into _execute
-			wrapped += "	" + line + "\n"
+			# Indent one level into _execute. The player's own indentation is
+			# converted to tabs first - beginners (and pasted hints) often
+			# indent with spaces, and GDScript rejects tab/space mixtures
+			# within a block.
+			wrapped += "	" + "\t".repeat(_indent_levels(line)) + stripped + "\n"
 			has_code = true
 
 	if not has_code:
 		wrapped += "	pass\n"
 
 	return wrapped
+
+
+## Convert a line's leading whitespace into indentation levels
+## (4 spaces or 1 tab = one level; any partial level counts as one).
+func _indent_levels(line: String) -> int:
+	var columns := 0
+	for i in range(line.length()):
+		var ch := line[i]
+		if ch == "\t":
+			columns += 4
+		elif ch == " ":
+			columns += 1
+		else:
+			break
+	var levels := columns / 4
+	if columns % 4 != 0:
+		levels += 1
+	return levels
 
 
 ## Get execution statistics

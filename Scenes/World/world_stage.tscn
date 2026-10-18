@@ -1,0 +1,434 @@
+[gd_scene load_steps=18 format=3]
+
+[ext_resource type="Script" path="res://Scripts/World/world_stage.gd" id="1_world"]
+[ext_resource type="Script" path="res://Scripts/Player/wizard_controller.gd" id="2_player"]
+[ext_resource type="Script" path="res://Scripts/Camera/game_camera.gd" id="3_camera"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/code_editor.tscn" id="4_editor"]
+[ext_resource type="Script" path="res://Scripts/World/puzzle_zone.gd" id="5_zone"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
+size = Vector2(32, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_goal"]
+size = Vector2(48, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g600"]
+size = Vector2(600, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g900"]
+size = Vector2(900, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g500"]
+size = Vector2(500, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g300"]
+size = Vector2(300, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_isle"]
+size = Vector2(90, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ledge300"]
+size = Vector2(300, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pillar240"]
+size = Vector2(40, 240)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pillar320"]
+size = Vector2(40, 320)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_summit"]
+size = Vector2(400, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(100, 1600)
+
+[node name="WorldStage" type="Node2D"]
+script = ExtResource("1_world")
+camera_limits = Rect2(-400, -400, 9200, 1600)
+player_spawn = Vector2(150, 500)
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="Background"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.07, 0.07, 0.12, 1)
+
+[node name="Ambience" type="Node2D" parent="."]
+
+[node name="StrataHigh" type="ColorRect" parent="Ambience"]
+offset_left = -500.0
+offset_top = 350.0
+offset_right = 8700.0
+offset_bottom = 410.0
+color = Color(0.11, 0.11, 0.19, 1)
+
+[node name="StrataLow" type="ColorRect" parent="Ambience"]
+offset_left = -500.0
+offset_top = 470.0
+offset_right = 8700.0
+offset_bottom = 510.0
+color = Color(0.09, 0.09, 0.16, 1)
+
+[node name="ForgeGlow" type="ColorRect" parent="Ambience"]
+offset_left = 4300.0
+offset_top = 300.0
+offset_right = 5300.0
+offset_bottom = 620.0
+color = Color(0.25, 0.1, 0.08, 0.35)
+
+[node name="ArcanumGlow" type="ColorRect" parent="Ambience"]
+offset_left = 6400.0
+offset_top = 100.0
+offset_right = 8200.0
+offset_bottom = 620.0
+color = Color(0.16, 0.08, 0.28, 0.4)
+
+[node name="Camera" type="Camera2D" parent="."]
+script = ExtResource("3_camera")
+lookahead_distance = 90.0
+lookahead_speed = 4.0
+default_zoom = Vector2(1.25, 1.25)
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(150, 500)
+script = ExtResource("2_player")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("RectangleShape2D_player")
+
+[node name="Visual" type="Polygon2D" parent="Player"]
+color = Color(0.5, 0.3, 0.8, 1)
+polygon = PackedVector2Array(-16, -24, 16, -24, 16, 24, -16, 24)
+
+[node name="Terrain" type="Node2D" parent="."]
+
+[node name="LeftGround" type="StaticBody2D" parent="Terrain"]
+position = Vector2(300, 620)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Terrain/LeftGround"]
+shape = SubResource("RectangleShape2D_g600")
+
+[node name="ColorRect" type="ColorRect" parent="Terrain/LeftGround"]
+offset_left = -300.0
+offset_top = -20.0
+offset_right = 300.0
+offset_bottom = 20.0
+color = Color(0.4, 0.3, 0.2, 1)
+
+[node name="RightGround" type="StaticBody2D" parent="Terrain"]
+position = Vector2(1350, 620)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Terrain/RightGround"]
+shape = SubResource("RectangleShape2D_g900")
+
+[node name="ColorRect" type="ColorRect" parent="Terrain/RightGround"]
+offset_left = -450.0
+offset_top = -20.0
+offset_right = 450.0
+offset_bottom = 20.0
+color = Color(0.4, 0.3, 0.2, 1)
+
+[node name="CenterGround" type="StaticBody2D" parent="Terrain"]
+position = Vector2(2100, 620)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Terrain/CenterGround"]
+shape = SubResource("RectangleShape2D_g600")
+
+[node name="ColorRect" type="ColorRect" parent="Terrain/CenterGround"]
+offset_left = -300.0
+offset_top = -20.0
+offset_right = 300.0
+offset_bottom = 20.0
+color = Color(0.42, 0.32, 0.22, 1)
+
+[node name="IsleMid" type="StaticBody2D" parent="Terrain"]
+position = Vector2(2850, 430)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Terrain/IsleMid"]
+shape = SubResource("RectangleShape2D_isle")
+
+[node name="ColorRect" type="ColorRect" parent="Terrain/IsleMid"]
+offset_left = -45.0
+offset_top = -8.0
+offset_right = 45.0
+offset_bottom = 8.0
+color = Color(0.45, 0.38, 0.28, 1)
+
+[node name="WestGround" type="StaticBody2D" parent="Terrain"]
+position = Vector2(3550, 620)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Terrain/WestGround"]
+shape = SubResource("RectangleShape2D_g500")
+
+[node name="ColorRect" type="ColorRect" parent="Terrain/WestGround"]
+offset_left = -250.0
+offset_top = -20.0
+offset_right = 250.0
+offset_bottom = 20.0
+color = Color(0.4, 0.32, 0.22, 1)
+
+[node name="ApproachGround" type="StaticBody2D" parent="Terrain"]
+position = Vector2(3950, 620)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Terrain/ApproachGround"]
+shape = SubResource("RectangleShape2D_g300")
+
+[node name="ColorRect" type="ColorRect" parent="Terrain/ApproachGround"]
+offset_left = -150.0
+offset_top = -20.0
+offset_right = 150.0
+offset_bottom = 20.0
+color = Color(0.38, 0.28, 0.24, 1)
+
+[node name="ForgeLedge" type="StaticBody2D" parent="Terrain"]
+position = Vector2(4250, 560)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Terrain/ForgeLedge"]
+shape = SubResource("RectangleShape2D_ledge300")
+
+[node name="ColorRect" type="ColorRect" parent="Terrain/ForgeLedge"]
+offset_left = -150.0
+offset_top = -8.0
+offset_right = 150.0
+offset_bottom = 8.0
+color = Color(0.35, 0.26, 0.24, 1)
+
+[node name="EastGround" type="StaticBody2D" parent="Terrain"]
+position = Vector2(5700, 620)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Terrain/EastGround"]
+shape = SubResource("RectangleShape2D_g600")
+
+[node name="ColorRect" type="ColorRect" parent="Terrain/EastGround"]
+offset_left = -300.0
+offset_top = -20.0
+offset_right = 300.0
+offset_bottom = 20.0
+color = Color(0.36, 0.28, 0.3, 1)
+
+[node name="ArcanumFloor" type="StaticBody2D" parent="Terrain"]
+position = Vector2(6250, 620)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Terrain/ArcanumFloor"]
+shape = SubResource("RectangleShape2D_g500")
+
+[node name="ColorRect" type="ColorRect" parent="Terrain/ArcanumFloor"]
+offset_left = -250.0
+offset_top = -20.0
+offset_right = 250.0
+offset_bottom = 20.0
+color = Color(0.32, 0.26, 0.42, 1)
+
+[node name="Pillar1" type="StaticBody2D" parent="Terrain"]
+position = Vector2(6900, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Terrain/Pillar1"]
+shape = SubResource("RectangleShape2D_pillar240")
+
+[node name="ColorRect" type="ColorRect" parent="Terrain/Pillar1"]
+offset_left = -20.0
+offset_top = -120.0
+offset_right = 20.0
+offset_bottom = 120.0
+color = Color(0.36, 0.3, 0.5, 1)
+
+[node name="Pillar2" type="StaticBody2D" parent="Terrain"]
+position = Vector2(7250, 560)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Terrain/Pillar2"]
+shape = SubResource("RectangleShape2D_pillar320")
+
+[node name="ColorRect" type="ColorRect" parent="Terrain/Pillar2"]
+offset_left = -20.0
+offset_top = -160.0
+offset_right = 20.0
+offset_bottom = 160.0
+color = Color(0.36, 0.3, 0.5, 1)
+
+[node name="Summit" type="StaticBody2D" parent="Terrain"]
+position = Vector2(7600, 560)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Terrain/Summit"]
+shape = SubResource("RectangleShape2D_summit")
+
+[node name="ColorRect" type="ColorRect" parent="Terrain/Summit"]
+offset_left = -200.0
+offset_top = -8.0
+offset_right = 200.0
+offset_bottom = 8.0
+color = Color(0.34, 0.28, 0.46, 1)
+
+[node name="WallLeft" type="StaticBody2D" parent="Terrain"]
+position = Vector2(-150, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Terrain/WallLeft"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="WallRight" type="StaticBody2D" parent="Terrain"]
+position = Vector2(8150, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Terrain/WallRight"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Zone1_TheAwakening" type="Node2D" parent="."]
+script = ExtResource("5_zone")
+zone_id = "zone_01"
+zone_title = "The Awakening"
+zone_description = "The gap between the ledges is too wide to jump. Cast spawn_platform() to build a bridge!"
+required_tier = "Apprentice"
+zone_bounds = Rect2(-60, 100, 1920, 750)
+goal_path = NodePath("Goal")
+hints = ["Use spawn_platform(x, y) to create a platform at that position.", "The gap is too wide to jump - spawn platforms to bridge it!", "spawn_platform(690, 560)\nspawn_platform(790, 520)\nspawn_platform(880, 560)"]
+
+[node name="Goal" type="Area2D" parent="Zone1_TheAwakening"]
+position = Vector2(1500, 555)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Zone1_TheAwakening/Goal"]
+shape = SubResource("RectangleShape2D_goal")
+
+[node name="ColorRect" type="ColorRect" parent="Zone1_TheAwakening/Goal"]
+offset_left = -24.0
+offset_top = -24.0
+offset_right = 24.0
+offset_bottom = 24.0
+color = Color(1, 0.84, 0, 1)
+
+[node name="ZoneLabel" type="Label" parent="Zone1_TheAwakening"]
+position = Vector2(60, 170)
+theme_override_colors/font_color = Color(0.85, 0.88, 0.98, 0.9)
+theme_override_font_sizes/font_size = 26
+text = "Zone I - The Awakening"
+fit_content = true
+
+[node name="Zone2_FloatingIsles" type="Node2D" parent="."]
+script = ExtResource("5_zone")
+zone_id = "zone_02"
+zone_title = "Floating Isles"
+zone_description = "Staggered isles float over the void. Use get_player_position() and if to place your stepping stones."
+required_tier = "Apprentice"
+zone_bounds = Rect2(1900, 50, 2000, 800)
+goal_path = NodePath("Goal")
+hints = ["var pos = get_player_position() - variables remember values for your whole spell.", "An if block only casts its spells when its condition is true.", "var pos = get_player_position()\nif pos.x > 2000:\n    spawn_platform(2520, 560)\n    spawn_platform(2680, 490)\nif pos.x > 2600:\n    spawn_platform(3020, 490)\n    spawn_platform(3180, 560)"]
+
+[node name="Goal" type="Area2D" parent="Zone2_FloatingIsles"]
+position = Vector2(3650, 555)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Zone2_FloatingIsles/Goal"]
+shape = SubResource("RectangleShape2D_goal")
+
+[node name="ColorRect" type="ColorRect" parent="Zone2_FloatingIsles/Goal"]
+offset_left = -24.0
+offset_top = -24.0
+offset_right = 24.0
+offset_bottom = 24.0
+color = Color(1, 0.84, 0, 1)
+
+[node name="ZoneLabel" type="Label" parent="Zone2_FloatingIsles"]
+position = Vector2(1960, 170)
+theme_override_colors/font_color = Color(0.85, 0.88, 0.98, 0.9)
+theme_override_font_sizes/font_size = 26
+text = "Zone II - Floating Isles"
+fit_content = true
+
+[node name="Zone3_ThePatternForge" type="Node2D" parent="."]
+script = ExtResource("5_zone")
+zone_id = "zone_03"
+zone_title = "The Pattern Forge"
+zone_description = "The forge demands five platforms of industry. Loops multiply your power - forge with for i in range()!"
+required_tier = "Journeyman"
+zone_bounds = Rect2(4000, -200, 1450, 1000)
+min_spawned_platforms = 5
+hints = ["A for loop repeats its indented spells: for i in range(5) runs them five times.", "i grows by 1 each pass: 0, 1, 2, 3, 4 - do math with it to spread platforms out.", "for i in range(6):\n    spawn_platform(4500 + i * 150, 520)"]
+
+[node name="EmberParticles" type="CPUParticles2D" parent="Zone3_ThePatternForge"]
+position = Vector2(4700, 600)
+amount = 30
+lifetime = 3.0
+one_shot = false
+emitting = true
+color = Color(1, 0.6, 0.25, 1)
+gravity = Vector2(0, -25)
+initial_velocity_min = 20.0
+initial_velocity_max = 60.0
+spread = 180.0
+scale_amount_min = 2.0
+scale_amount_max = 5.0
+
+[node name="ZoneLabel" type="Label" parent="Zone3_ThePatternForge"]
+position = Vector2(4050, -80)
+theme_override_colors/font_color = Color(0.98, 0.8, 0.7, 0.9)
+theme_override_font_sizes/font_size = 26
+text = "Zone III - The Pattern Forge  [Journeyman]"
+fit_content = true
+
+[node name="Zone4_TheArcanum" type="Node2D" parent="."]
+script = ExtResource("5_zone")
+zone_id = "zone_04"
+zone_title = "The Arcanum"
+zone_description = "A chasm of dark matter bars the way. Only the Master arts may span it - use physics_raycast() to find the pillars, then build your path."
+required_tier = "Master"
+zone_bounds = Rect2(5950, -200, 2150, 1000)
+goal_path = NodePath("Goal")
+required_function = "physics_raycast"
+hints = ["physics_raycast(x1, y1, x2, y2) casts a ray and reports {hit, position, normal, collider}.", "var hit = physics_raycast(6900, 200, 6900, 700)\nif hit[\"hit\"]:\n    log_message(str(hit[\"position\"]))", "var hit = physics_raycast(6900, 200, 6900, 700)\nspawn_platform(6640, 545)\nspawn_platform(6850, 480)\nspawn_platform(7080, 490)\nspawn_platform(7300, 530)"]
+
+[node name="Goal" type="Area2D" parent="Zone4_TheArcanum"]
+position = Vector2(7600, 500)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Zone4_TheArcanum/Goal"]
+shape = SubResource("RectangleShape2D_goal")
+
+[node name="ColorRect" type="ColorRect" parent="Zone4_TheArcanum/Goal"]
+offset_left = -24.0
+offset_top = -24.0
+offset_right = 24.0
+offset_bottom = 24.0
+color = Color(1, 0.84, 0, 1)
+
+[node name="ZoneLabel" type="Label" parent="Zone4_TheArcanum"]
+position = Vector2(6000, -80)
+theme_override_colors/font_color = Color(0.85, 0.75, 0.98, 0.9)
+theme_override_font_sizes/font_size = 26
+text = "Zone IV - The Arcanum  [Master]"
+fit_content = true
+
+[node name="HUD" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="ZoneLabel" type="Label" parent="HUD"]
+anchor_right = 1.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(0.85, 0.88, 0.98, 1)
+theme_override_font_sizes/font_size = 18
+text = "The Wizard's Path"
+vertical_alignment = 1
+
+[node name="MessageLabel" type="Label" parent="HUD"]
+visible = false
+anchor_left = 0.1
+anchor_right = 0.9
+offset_top = 44.0
+offset_bottom = 92.0
+theme_override_colors/font_color = Color(0.98, 0.87, 0.5, 1)
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Hint" type="Label" parent="HUD"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -44.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Press E - Spellbook   |   WASD / Arrows to move   |   Space to jump"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CodeEditor" parent="." instance=ExtResource("4_editor")]

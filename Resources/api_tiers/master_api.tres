@@ -1,0 +1,149 @@
+[gd_resource type="Resource" script_class="WizardAPI" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Core/wizard_api.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+tier_name = "Master"
+tier_order = 2
+allowed_functions = {
+"change_gravity": {
+"args": ["float"],
+"param_names": ["value"],
+"returns": "void"
+},
+"clear_all_platforms": {
+"args": [],
+"param_names": [],
+"returns": "void"
+},
+"color_platform": {
+"args": ["float", "float", "Color", "float"],
+"param_names": ["x", "y", "color", "tolerance"],
+"defaults": {
+"3": "32.0"
+},
+"returns": "bool"
+},
+"connect_signal": {
+"args": ["Node", "String", "String"],
+"param_names": ["node", "signal", "method"],
+"returns": "void"
+},
+"count_spawned_platforms": {
+"args": [],
+"param_names": [],
+"returns": "int"
+},
+"get_node": {
+"args": ["String"],
+"param_names": ["path"],
+"returns": "Node"
+},
+"get_player_position": {
+"args": [],
+"param_names": [],
+"returns": "Vector2"
+},
+"instantiate_scene": {
+"args": ["String", "float", "float"],
+"param_names": ["path", "x", "y"],
+"returns": "Node2D"
+},
+"is_player_near": {
+"args": ["float", "float", "float"],
+"param_names": ["x", "y", "radius"],
+"defaults": {
+"2": "64.0"
+},
+"returns": "bool"
+},
+"log_message": {
+"args": ["String"],
+"param_names": ["message"],
+"returns": "void"
+},
+"physics_raycast": {
+"args": ["float", "float", "float", "float"],
+"param_names": ["x1", "y1", "x2", "y2"],
+"returns": "Dictionary"
+},
+"platform_exists_at": {
+"args": ["float", "float", "float"],
+"param_names": ["x", "y", "tolerance"],
+"defaults": {
+"2": "32.0"
+},
+"returns": "bool"
+},
+"random_int": {
+"args": ["int", "int"],
+"param_names": ["min_val", "max_val"],
+"returns": "int"
+},
+"random_range": {
+"args": ["float", "float"],
+"param_names": ["min_val", "max_val"],
+"returns": "float"
+},
+"remove_platform": {
+"args": ["float", "float", "float"],
+"param_names": ["x", "y", "tolerance"],
+"defaults": {
+"2": "32.0"
+},
+"returns": "bool"
+},
+"spawn_particles": {
+"args": ["float", "float", "int", "Color"],
+"param_names": ["x", "y", "count", "color"],
+"defaults": {
+"2": "10",
+"3": "Color.WHITE"
+},
+"returns": "void"
+},
+"spawn_platform": {
+"args": ["float", "float", "float", "float"],
+"param_names": ["x", "y", "width", "height"],
+"defaults": {
+"2": "64",
+"3": "16"
+},
+"returns": "Node2D"
+},
+"teleport_player": {
+"args": ["float", "float"],
+"param_names": ["x", "y"],
+"returns": "void"
+},
+"tween_property": {
+"args": ["Node2D", "String", "Variant", "float"],
+"param_names": ["target", "property", "to", "duration"],
+"returns": "void"
+},
+"vec2": {
+"args": ["float", "float"],
+"param_names": ["x", "y"],
+"returns": "Vector2"
+},
+"wait": {
+"args": ["float"],
+"param_names": ["seconds"],
+"returns": "void"
+}
+}
+allowed_node_methods = {}
+allowed_node_properties = {}
+allowed_classes = ["Vector2", "Vector2i", "Color", "Array", "Dictionary", "Rect2", "String"]
+allowed_constants = ["PI", "TAU", "INF", "NAN"]
+allow_loops = true
+allow_conditionals = true
+allow_functions = true
+allow_lambdas = true
+allow_match = true
+max_execution_time_ms = 5000
+max_memory_bytes = 1048576
+max_statements = 1000
+max_recursion_depth = 50
+api_implementation_path = "res://Scripts/Core/master_api.gd"
