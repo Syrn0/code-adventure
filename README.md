@@ -10,8 +10,8 @@ A puzzle platformer where you write GDScript code to solve puzzles and progress 
 
 - 🪄 **Learn by Doing**: Write real GDScript code to solve puzzles
 - 📜 **Progressive Learning**: Start with visual blocks, graduate to full coding
-- 🧩 **Puzzle Platforming**: Cross gaps, avoid hazards, reach the goal
-- 🏰 **Medieval Fantasy Theme**: Play as a wizard learning their craft
+- 🧩 **Puzzle Platforming & Action Adventure**: Cross gaps, avoid hazards, fight enemies and explore the world!
+- 🏰 **Medieval Fantasy Theme**: Play as a wizard learning spells to progress through the world and increase their experience
 - 🎮 **Desktop Support**: Windows, Linux, macOS
 
 ## Getting Started
@@ -164,5 +164,3 @@ See [LICENSE](LICENSE) for details.
 - All the aspiring wizards who will play this game!
 
 ---
-
-Made with 💜 and ☕
